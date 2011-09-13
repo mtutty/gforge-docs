@@ -2,3 +2,5 @@ bin/
 obj/
 .user
 .suo
+GForgeDocWindow.suo
+GForgeDocWindow/GForgeDocWindow.csproj.user

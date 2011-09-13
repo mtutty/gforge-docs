@@ -122,6 +122,9 @@
     <EmbeddedResource Include="Actions\LogonAction.resx">
       <DependentUpon>LogonAction.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\BackgroundWorkerDialog.resx">
+      <DependentUpon>BackgroundWorkerDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\CheckoutDialog.resx">
       <DependentUpon>CheckoutDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -161,6 +164,9 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="wait_animated.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

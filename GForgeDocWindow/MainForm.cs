@@ -115,17 +115,19 @@ namespace GForgeDocWindow {
             if (this.proxy == null || string.IsNullOrEmpty(this.proxy.Token)) {
                 LogonDialog dialog = new LogonDialog();
                 if (dialog.ShowDialog(this) == DialogResult.OK) {
-                    LogonAction action = new LogonAction(dialog.ServerURL, dialog.UserID, dialog.Password);
-                    switch (action.ShowDialog(this)) {
+                    LogonActionWorker law = new LogonActionWorker(dialog.ServerURL, dialog.UserID, dialog.Password);
+                    BackgroundWorkerDialog bwd = new BackgroundWorkerDialog(@"Logging into GForge Server", law);
+                    //LogonAction action = new LogonAction(dialog.ServerURL, dialog.UserID, dialog.Password);
+                    switch (bwd.ShowDialog(this)) {
                         case System.Windows.Forms.DialogResult.OK:
-                            this.proxy = action.Proxy;
+                            this.proxy = law.Proxy;
                             Properties.Settings.Default.GForgeHost = dialog.ServerURL;
                             Properties.Settings.Default.GForgeUserID = dialog.UserID;
                             return true;
                         case System.Windows.Forms.DialogResult.Cancel:
                             return false;
                         case System.Windows.Forms.DialogResult.Abort:
-                            MessageBox.Show(this, action.Error, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show(this, law.Error, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return false;
                     }
                 }

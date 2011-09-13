@@ -23,7 +23,7 @@ namespace GForgeDocWindow.Actions {
             this.Password = password;
         }
 
-        void LogonActionWorker_DoWork(object sender, DoWorkEventArgs e) {
+        public void LogonActionWorker_DoWork(object sender, DoWorkEventArgs e) {
             try {
                 if (this.CancellationPending) {
                     return;
