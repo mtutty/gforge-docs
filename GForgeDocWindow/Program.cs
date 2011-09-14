@@ -12,7 +12,9 @@ namespace GForgeDocWindow {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            MainForm start = new MainForm();
+            Application.DoEvents();
+            Application.Run(start);
         }
     }
 }

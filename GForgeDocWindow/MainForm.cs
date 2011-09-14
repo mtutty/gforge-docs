@@ -31,12 +31,16 @@ namespace GForgeDocWindow {
                 string msg = string.Format(@"Sorry, the path you requested ({0}) does not exist.  Starting in {1} instead.", startPath, currentLocation.Name);
                 MessageBox.Show(msg, @"Invalid Starting Folder", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+
+            if (currentLocation != null)
+                this.Browser.Navigate(currentLocation);
         }
 
         public MainForm() : this(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)) { }
 
         private void MainForm_Shown(object sender, EventArgs e) {
-            this.Browser.Navigate(currentLocation);
+            //this.Refresh();
+            //Application.DoEvents();
         }
 
         private void Browser_ItemsChanged(object sender, EventArgs e) {
@@ -45,7 +49,6 @@ namespace GForgeDocWindow {
 
         private void Browser_NavigationComplete(object sender, Microsoft.WindowsAPICodePack.Controls.NavigationCompleteEventArgs e) {
             currentLocation = e.NewLocation;
-            //Console.WriteLine(string.Format(@"Navigated to {0}", currentLocation.Name));
             SetToolBarStatus(currentLocation.ParsingName);
             this.Text = currentLocation.ParsingName;
         }
@@ -93,8 +96,8 @@ namespace GForgeDocWindow {
             if (CheckLogon()) {
                 if (this.projects == null) {
                     System.Windows.Forms.Application.DoEvents();
-                    ListProjectsAction action = new ListProjectsAction(this.proxy);
-                    switch (action.ShowDialog(this)) {
+                    ListProjectsWorker action = new ListProjectsWorker(this.proxy);
+                    switch (BackgroundWorkerDialog.Run(@"Project List", action, this)) {
                         case System.Windows.Forms.DialogResult.OK:
                             this.projects = action.Projects;
                             return true;
@@ -116,9 +119,7 @@ namespace GForgeDocWindow {
                 LogonDialog dialog = new LogonDialog();
                 if (dialog.ShowDialog(this) == DialogResult.OK) {
                     LogonActionWorker law = new LogonActionWorker(dialog.ServerURL, dialog.UserID, dialog.Password);
-                    BackgroundWorkerDialog bwd = new BackgroundWorkerDialog(@"Logging into GForge Server", law);
-                    //LogonAction action = new LogonAction(dialog.ServerURL, dialog.UserID, dialog.Password);
-                    switch (bwd.ShowDialog(this)) {
+                    switch (BackgroundWorkerDialog.Run(@"Logging into GForge Server", law, this)) {
                         case System.Windows.Forms.DialogResult.OK:
                             this.proxy = law.Proxy;
                             Properties.Settings.Default.GForgeHost = dialog.ServerURL;

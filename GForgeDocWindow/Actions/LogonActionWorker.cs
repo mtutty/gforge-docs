@@ -14,6 +14,7 @@ namespace GForgeDocWindow.Actions {
 
         public LogonActionWorker() : base() {
             this.DoWork += new DoWorkEventHandler(LogonActionWorker_DoWork);
+            this.WorkerReportsProgress = true;
         }
 
         public LogonActionWorker(string url, string userID, string password)
@@ -48,6 +49,7 @@ namespace GForgeDocWindow.Actions {
 
             } catch (Exception ex) {
                 this.Error = ex.Message;
+                throw;
             }
         }
     }

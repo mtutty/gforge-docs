@@ -27,8 +27,8 @@
         private void InitializeComponent() {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnCancel = new System.Windows.Forms.Button();
             this.picWaitImage = new System.Windows.Forms.PictureBox();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picWaitImage)).BeginInit();
             this.SuspendLayout();
@@ -39,20 +39,19 @@
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnCancel, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.picWaitImage, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.btnCancel, 0, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 16F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(219, 114);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(303, 128);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label1
@@ -61,46 +60,45 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label1.Location = new System.Drawing.Point(2, 2);
-            this.label1.Margin = new System.Windows.Forms.Padding(2);
+            this.label1.Location = new System.Drawing.Point(2, 8);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 8, 2, 10);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(2);
-            this.label1.Size = new System.Drawing.Size(215, 19);
+            this.label1.Size = new System.Drawing.Size(299, 17);
             this.label1.TabIndex = 1;
             this.label1.Text = "label1";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // picWaitImage
+            // 
+            this.picWaitImage.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.picWaitImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.picWaitImage.Location = new System.Drawing.Point(127, 38);
+            this.picWaitImage.Name = "picWaitImage";
+            this.picWaitImage.Size = new System.Drawing.Size(48, 48);
+            this.picWaitImage.TabIndex = 3;
+            this.picWaitImage.TabStop = false;
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btnCancel.AutoSize = true;
-            this.btnCancel.Location = new System.Drawing.Point(81, 101);
+            this.btnCancel.Location = new System.Drawing.Point(123, 97);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 8);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(56, 10);
+            this.btnCancel.Size = new System.Drawing.Size(56, 23);
             this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            // 
-            // picWaitImage
-            // 
-            this.picWaitImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picWaitImage.Location = new System.Drawing.Point(3, 26);
-            this.picWaitImage.Name = "picWaitImage";
-            this.picWaitImage.Size = new System.Drawing.Size(213, 50);
-            this.picWaitImage.TabIndex = 3;
-            this.picWaitImage.TabStop = false;
             // 
             // BackgroundWorkerDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(219, 114);
+            this.ClientSize = new System.Drawing.Size(303, 128);
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "BackgroundWorkerDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

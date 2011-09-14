@@ -12,30 +12,49 @@ using GForgeDocWindow.Util;
 namespace GForgeDocWindow.Dialogs {
     public partial class SelectProjectDialog : Form {
 
+        private IList<Project> projects = null;
         public Project SelectedProject { get; set; }
 
         public SelectProjectDialog(IList<Project> projects) {
             InitializeComponent();
-            FillList(projects);
+            this.projects = projects;
+            FillList();
         }
 
-        private void FillList(IList<Project> projects) {
-            this.ProjectList.Items.Clear();
+        private void FillList() {
+            this.lvProjects.SuspendLayout();
+            this.lvProjects.Items.Clear();
 
-            this.ProjectList.DisplayMember = @"project_name";
-            this.ProjectList.ValueMember = @"project_id";
-            foreach (Project p in projects) {
-                this.ProjectList.Items.Add(p);
+            IEnumerable<Project> listToShow = null;
+            if (this.FilterText.Text.Length == 0) {
+                listToShow = this.projects;
+            } else if (this.FilterText.Text.Length < 3) {
+              listToShow  = this.projects.Where<Project>(p => p.project_name.ToLower().StartsWith(this.FilterText.Text.ToLower()));
+            } else {
+                listToShow = this.projects.Where<Project>(p => p.project_name.ToLower().Contains(this.FilterText.Text.ToLower()));
             }
-            this.ProjectList.Sorted = true;
+
+            foreach (Project p in listToShow) {
+                ListViewItem item = new ListViewItem(p.project_name);
+                item.Tag = p;
+                this.lvProjects.Items.Add(item);
+            }
+            this.lvProjects.ResumeLayout();
         }
 
         private void SelectProjectDialog_Validating(object sender, CancelEventArgs e) {
-            SelectedProject = this.ProjectList.SelectedItem as Project;
+            SelectedProject = null;
+            if (this.lvProjects.SelectedItems.Count > 0) {
+                SelectedProject = this.lvProjects.SelectedItems[0].Tag as Project;
+            }
             if (SelectedProject == null) {
                 MessageBox.Show(this, this.Text, @"You must select a GForge Project from the list.  Click Cancel if you want to quit without selecting a Project.", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 e.Cancel = true;
             }
+        }
+
+        private void FilterText_TextChanged(object sender, EventArgs e) {
+            FillList();
         }
 
     }
