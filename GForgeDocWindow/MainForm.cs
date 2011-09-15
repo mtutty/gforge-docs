@@ -14,6 +14,7 @@ namespace GForgeDocWindow {
         private ShellObject currentLocation = null;
         private GForgeProxy proxy = null;
         private IList<Project> projects = null;
+        private LocalFileService lfs = new LocalFileService();
 
         public MainForm(string startPath) {
             InitializeComponent();
@@ -56,9 +57,9 @@ namespace GForgeDocWindow {
         private void SetToolBarStatus(string location) {
             try {
                 this.TopToolStrip.SuspendLayout();
-                this.GForgeActiveLabel.Enabled = Directory.Exists(Path.Combine(location, @".gfdocs"));
+                this.GForgeActiveLabel.Enabled = lfs.IsSyncedFolder(location);
                 if (this.GForgeActiveLabel.Enabled) {
-                    this.ChangedLabel.Enabled = HasChanges(location);
+                    this.ChangedLabel.Enabled = lfs.HasChanges(location, true);
                     this.SyncButton.Enabled = true;
                     this.CheckOutButton.Enabled = false;
                 } else {
@@ -79,13 +80,9 @@ namespace GForgeDocWindow {
             }
         }
 
-        private bool HasChanges(string location) {
-            return false;
-        }
-
         private void CheckOutButton_Click(object sender, EventArgs e) {
             if (CheckProjectList()) {
-                SelectProjectDialog dialog = new SelectProjectDialog(this.projects);
+                CheckoutDialog dialog = new CheckoutDialog(this.projects, this.currentLocation.ParsingName);
                 if (dialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
                     Console.WriteLine(dialog.SelectedProject.ToString());
                 }
