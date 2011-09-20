@@ -58,7 +58,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\DownloadProjectWorker.cs" />
+    <Compile Include="Actions\DownloadProjectWorker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Actions\ListProjectsWorker.cs">
       <SubType>Component</SubType>
     </Compile>

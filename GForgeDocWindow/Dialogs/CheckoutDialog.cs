@@ -17,6 +17,9 @@ namespace GForgeDocWindow.Dialogs {
         public Project SelectedProject { get; protected set; }
         public IList<Project> Projects { get; protected set; }
 
+        private string longName = string.Empty;
+        private string unixName = string.Empty;
+
         public CheckoutDialog() {
             InitializeComponent();
         }
@@ -39,16 +42,13 @@ namespace GForgeDocWindow.Dialogs {
         }
 
         private void SetPathOptions() {
-            string longName = @"Project Name";
-            string shortName = "project";
-
             if (SelectedProject != null) {
-                longName = SelectedProject.project_name;
-                shortName = SelectedProject.unix_name;
+                this.longName = SelectedProject.project_name;
+                this.unixName = SelectedProject.unix_name;
             }
 
-            this.ProjectName.Text = string.Format(@"Project Name: {0}", longName);
-            this.UnixName.Text = string.Format(@"Short Name: {0}", shortName);
+            this.ProjectName.Text = string.Format(@"Project Name: {0}", this.longName);
+            this.UnixName.Text = string.Format(@"Short Name: {0}", this.unixName);
         }
 
         private void CustomPath_Validating(object sender, CancelEventArgs e) {
@@ -68,6 +68,12 @@ namespace GForgeDocWindow.Dialogs {
 
         private void OKButton_Click(object sender, EventArgs e) {
             this.errorProvider1.Clear();
+
+            if (this.CurrentFolder.Checked) this.SelectedPath = this.BasePath;
+            if (this.ProjectName.Checked) this.SelectedPath = this.longName;
+            if (this.UnixName.Checked) this.SelectedPath = this.unixName;
+            if (this.CustomName.Checked) this.SelectedPath = this.CustomPath.Text;
+            
             if (this.ValidateChildren()) this.DialogResult = System.Windows.Forms.DialogResult.OK;
         }
 

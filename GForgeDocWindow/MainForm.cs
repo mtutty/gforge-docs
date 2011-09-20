@@ -40,8 +40,7 @@ namespace GForgeDocWindow {
         public MainForm() : this(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)) { }
 
         private void MainForm_Shown(object sender, EventArgs e) {
-            //this.Refresh();
-            //Application.DoEvents();
+            // Nothing
         }
 
         private void Browser_ItemsChanged(object sender, EventArgs e) {
@@ -84,7 +83,18 @@ namespace GForgeDocWindow {
             if (CheckProjectList()) {
                 CheckoutDialog dialog = new CheckoutDialog(this.projects, this.currentLocation.ParsingName);
                 if (dialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
-                    Console.WriteLine(dialog.SelectedProject.ToString());
+                    DownloadProjectWorker dpw = new DownloadProjectWorker(this.lfs, this.proxy, dialog.SelectedProject.project_id, Path.Combine(dialog.BasePath, dialog.SelectedPath));
+                    switch (BackgroundWorkerDialog.Run(@"Sync Project Docs", dpw, this)) {
+                        case System.Windows.Forms.DialogResult.OK:
+                            return;
+                        case System.Windows.Forms.DialogResult.Cancel:
+                            string msg = @"The sync process was canceled.  Some folders and files may be missing or out-of-date.";
+                            MessageBox.Show(this, msg, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                            return;
+                        case System.Windows.Forms.DialogResult.Abort:
+                            MessageBox.Show(this, dpw.Error, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                    }
                 }
             }
         }
