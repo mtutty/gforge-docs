@@ -84,7 +84,7 @@ namespace GForgeDocWindow {
             if (CheckProjectList()) {
                 CheckoutDialog dialog = new CheckoutDialog(this.projects, this.currentLocation.ParsingName);
                 if (dialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
-                    Console.WriteLine(dialog.SelectedProject.ToString());
+                    //this.proxy.getDocmanFolders(this.proxy.Token, dialog.SelectedProject.project_id);
                 }
             }
         }
