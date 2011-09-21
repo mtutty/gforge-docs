@@ -19,64 +19,64 @@ namespace GForgeDocWindow {
         public MainForm(string startPath) {
             InitializeComponent();
 
+            if (string.IsNullOrEmpty(startPath) ||
+                ! Directory.Exists(startPath)) {
+                startPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            }
+
             if (Directory.Exists(startPath)) {
                 currentLocation = ShellFileSystemFolder.FromFolderPath(startPath);
             } else {
-                string myDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                if (Directory.Exists(myDocs)) {
-                    currentLocation = ShellFileSystemFolder.FromFolderPath(myDocs);
-                } else {
-                    currentLocation = ShellFileSystemFolder.FromFolderPath(Application.StartupPath);
-                }
-
+                currentLocation = ShellFileSystemFolder.FromFolderPath(Application.StartupPath);
                 string msg = string.Format(@"Sorry, the path you requested ({0}) does not exist.  Starting in {1} instead.", startPath, currentLocation.Name);
                 MessageBox.Show(msg, @"Invalid Starting Folder", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-
+            }            
+            
             if (currentLocation != null)
                 this.Browser.Navigate(currentLocation);
         }
 
-        public MainForm() : this(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)) { }
+        public MainForm() : this(Properties.Settings.Default.CurrentLocation) { }
 
         private void MainForm_Shown(object sender, EventArgs e) {
             // Nothing
         }
 
         private void Browser_ItemsChanged(object sender, EventArgs e) {
-            Console.WriteLine(string.Format(@"Items Changed in {0}", currentLocation.ParsingName));
+            //Console.WriteLine(string.Format(@"Items Changed in {0}", currentLocation.ParsingName));
+            SetToolBarStatus(currentLocation.ParsingName);
         }
 
         private void Browser_NavigationComplete(object sender, Microsoft.WindowsAPICodePack.Controls.NavigationCompleteEventArgs e) {
             currentLocation = e.NewLocation;
-            SetToolBarStatus(currentLocation.ParsingName);
+            //SetToolBarStatus(currentLocation.ParsingName);
             this.Text = currentLocation.ParsingName;
         }
 
         private void SetToolBarStatus(string location) {
-            try {
-                this.TopToolStrip.SuspendLayout();
-                this.GForgeActiveLabel.Enabled = lfs.IsSyncedFolder(location);
-                if (this.GForgeActiveLabel.Enabled) {
-                    this.ChangedLabel.Enabled = lfs.HasChanges(location, true);
-                    this.SyncButton.Enabled = true;
-                    this.CheckOutButton.Enabled = false;
-                } else {
-                    this.ChangedLabel.Enabled = false;
-                    this.SyncButton.Enabled = false;
-                    this.CheckOutButton.Enabled = true;
-                }
-            } catch (Exception ex) {
-                Console.WriteLine(ex.Message);
+            //try {
+            //    this.TopToolStrip.SuspendLayout();
+            //    this.GForgeActiveLabel.Enabled = lfs.IsSyncedFolder(location);
+            //    if (this.GForgeActiveLabel.Enabled) {
+            //        this.ChangedLabel.Enabled = lfs.HasChanges(location, true);
+            //        this.SyncButton.Enabled = true;
+            //        this.CheckOutButton.Enabled = false;
+            //    } else {
+            //        this.ChangedLabel.Enabled = false;
+            //        this.SyncButton.Enabled = false;
+            //        this.CheckOutButton.Enabled = true;
+            //    }
+            //} catch (Exception ex) {
+            //    Console.WriteLine(ex.Message);
 
-                this.SyncButton.Enabled = false;
-                this.CheckOutButton.Enabled = false;
-                this.GForgeActiveLabel.Enabled = false;
-                this.ChangedLabel.Enabled = false;
+            //    this.SyncButton.Enabled = false;
+            //    this.CheckOutButton.Enabled = false;
+            //    this.GForgeActiveLabel.Enabled = false;
+            //    this.ChangedLabel.Enabled = false;
 
-            } finally {
-                this.TopToolStrip.ResumeLayout();
-            }
+            //} finally {
+            //    this.TopToolStrip.ResumeLayout();
+            //}
         }
 
         private void CheckOutButton_Click(object sender, EventArgs e) {
@@ -86,14 +86,16 @@ namespace GForgeDocWindow {
                     DownloadProjectWorker dpw = new DownloadProjectWorker(this.lfs, this.proxy, dialog.SelectedProject.project_id, Path.Combine(dialog.BasePath, dialog.SelectedPath));
                     switch (BackgroundWorkerDialog.Run(@"Sync Project Docs", dpw, this)) {
                         case System.Windows.Forms.DialogResult.OK:
-                            return;
+                            break;
                         case System.Windows.Forms.DialogResult.Cancel:
                             string msg = @"The sync process was canceled.  Some folders and files may be missing or out-of-date.";
                             MessageBox.Show(this, msg, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                            return;
+                            break;
                         case System.Windows.Forms.DialogResult.Abort:
-                            MessageBox.Show(this, dpw.Error, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
+                            break;
+                    }
+                    if (string.IsNullOrEmpty(dpw.Error) == false) {
+                        RawTextDisplayDialog.Show(this, dpw.Error);
                     }
                 }
             }
@@ -146,6 +148,7 @@ namespace GForgeDocWindow {
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
             try {
+                Properties.Settings.Default.CurrentLocation = this.currentLocation.ParsingName;
                 Properties.Settings.Default.Save();
             } catch (Exception ex) {
                 Console.WriteLine(ex.Message);

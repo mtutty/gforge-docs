@@ -84,6 +84,15 @@ namespace GForgeDocWindow.Util {
             File.SetLastWriteTime(destinationFile, lastChanged);
         }
 
+        public void DownloadFile(string url, string destinationFile, DateTime lastChanged) {
+            System.Net.WebClient wc = new System.Net.WebClient();
+            string tempFile = this.BuildPath(destinationFile, @".tmp");
+            wc.DownloadFile(url, tempFile);
+            if (File.Exists(destinationFile)) File.Delete(destinationFile);
+            File.Move(tempFile, destinationFile);
+            File.SetLastWriteTime(destinationFile, lastChanged);
+        }
+
         public bool HasChanges(string location, bool recursive) {
             if (IsSyncedFolder(location)) {
                 DateTime repoDate = File.GetLastWriteTime(RepositoryFileFor(location));

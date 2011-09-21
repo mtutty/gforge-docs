@@ -59,7 +59,5 @@ namespace GForgeDocWindow.Util {
             get { return token; }
             set { token = value; }
         }
-
-
     }
 }

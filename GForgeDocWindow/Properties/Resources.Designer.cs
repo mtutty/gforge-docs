@@ -60,6 +60,13 @@ namespace GForgeDocWindow.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap gforge_g {
+            get {
+                object obj = ResourceManager.GetObject("gforge_g", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap wait_animated {
             get {
                 object obj = ResourceManager.GetObject("wait_animated", resourceCulture);
