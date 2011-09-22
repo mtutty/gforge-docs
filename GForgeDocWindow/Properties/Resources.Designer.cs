@@ -60,9 +60,58 @@ namespace GForgeDocWindow.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap back_16 {
+            get {
+                object obj = ResourceManager.GetObject("back_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap forward_16 {
+            get {
+                object obj = ResourceManager.GetObject("forward_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Icon gforge {
+            get {
+                object obj = ResourceManager.GetObject("gforge", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap gforge_g {
             get {
                 object obj = ResourceManager.GetObject("gforge_g", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap gforge_g_color {
+            get {
+                object obj = ResourceManager.GetObject("gforge_g_color", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Go {
+            get {
+                object obj = ResourceManager.GetObject("Go", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap refresh_16 {
+            get {
+                object obj = ResourceManager.GetObject("refresh_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap sync_16 {
+            get {
+                object obj = ResourceManager.GetObject("sync_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

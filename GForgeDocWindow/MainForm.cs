@@ -49,13 +49,13 @@ namespace GForgeDocWindow {
 
         private void Browser_NavigationComplete(object sender, Microsoft.WindowsAPICodePack.Controls.NavigationCompleteEventArgs e) {
             currentLocation = e.NewLocation;
-            //SetToolBarStatus(currentLocation.ParsingName);
+            SetToolBarStatus(currentLocation.ParsingName);
             this.Text = currentLocation.ParsingName;
         }
 
         private void SetToolBarStatus(string location) {
             //try {
-            //    this.TopToolStrip.SuspendLayout();
+            //    this.ActionStrip.SuspendLayout();
             //    this.GForgeActiveLabel.Enabled = lfs.IsSyncedFolder(location);
             //    if (this.GForgeActiveLabel.Enabled) {
             //        this.ChangedLabel.Enabled = lfs.HasChanges(location, true);
@@ -75,7 +75,7 @@ namespace GForgeDocWindow {
             //    this.ChangedLabel.Enabled = false;
 
             //} finally {
-            //    this.TopToolStrip.ResumeLayout();
+            //    this.ActionStrip.ResumeLayout();
             //}
         }
 
@@ -155,6 +155,8 @@ namespace GForgeDocWindow {
             }
         }
 
-
+        private void MainForm_Resize(object sender, EventArgs e) {
+            this.LocationBox.TextBox.Size = new System.Drawing.Size(this.Size.Width - 230, this.LocationBox.TextBox.Size.Height);
+        }
     }
 }

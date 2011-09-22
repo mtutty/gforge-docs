@@ -149,14 +149,22 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="res\gforge_g.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="res\wait_animated.gif" />
+    <EmbeddedResource Include="res\back-16.png" />
+    <EmbeddedResource Include="res\forward-16.png" />
+    <EmbeddedResource Include="res\gforge_g.png" />
+    <EmbeddedResource Include="res\Go.png" />
+    <EmbeddedResource Include="res\refresh-16.png" />
+    <EmbeddedResource Include="res\sync-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="res\wait_animated.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="res\gforge.ico" />
+    <None Include="res\gforge_g_color.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
