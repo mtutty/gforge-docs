@@ -24,66 +24,36 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.MainContainer = new System.Windows.Forms.ToolStripContainer();
             this.Browser = new Microsoft.WindowsAPICodePack.Controls.WindowsForms.ExplorerBrowser();
-            this.TopToolStrip = new System.Windows.Forms.ToolStrip();
             this.CheckOutButton = new System.Windows.Forms.ToolStripButton();
             this.SyncButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ChangedLabel = new System.Windows.Forms.ToolStripLabel();
             this.GForgeActiveLabel = new System.Windows.Forms.ToolStripLabel();
-            this.MainContainer.ContentPanel.SuspendLayout();
-            this.MainContainer.TopToolStripPanel.SuspendLayout();
-            this.MainContainer.SuspendLayout();
-            this.TopToolStrip.SuspendLayout();
+            this.BackButton = new System.Windows.Forms.ToolStripButton();
+            this.ForwardButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.RefreshButton = new System.Windows.Forms.ToolStripButton();
+            this.LocationText = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+            this.LocationLabel = new System.Windows.Forms.ToolStripLabel();
+            this.pnlTop = new System.Windows.Forms.TableLayoutPanel();
+            this.NavStrip = new System.Windows.Forms.ToolStrip();
+            this.ActionStrip = new System.Windows.Forms.ToolStrip();
+            this.pnlTop.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // MainContainer
-            // 
-            this.MainContainer.BottomToolStripPanelVisible = false;
-            // 
-            // MainContainer.ContentPanel
-            // 
-            this.MainContainer.ContentPanel.Controls.Add(this.Browser);
-            this.MainContainer.ContentPanel.Size = new System.Drawing.Size(515, 384);
-            this.MainContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainContainer.LeftToolStripPanelVisible = false;
-            this.MainContainer.Location = new System.Drawing.Point(0, 0);
-            this.MainContainer.Name = "MainContainer";
-            this.MainContainer.RightToolStripPanelVisible = false;
-            this.MainContainer.Size = new System.Drawing.Size(515, 409);
-            this.MainContainer.TabIndex = 3;
-            this.MainContainer.Text = "toolStripContainer1";
-            // 
-            // MainContainer.TopToolStripPanel
-            // 
-            this.MainContainer.TopToolStripPanel.Controls.Add(this.TopToolStrip);
             // 
             // Browser
             // 
             this.Browser.AllowDrop = true;
             this.Browser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Browser.Location = new System.Drawing.Point(0, 0);
+            this.Browser.Location = new System.Drawing.Point(0, 54);
             this.Browser.Name = "Browser";
             this.Browser.PropertyBagName = "Microsoft.WindowsAPICodePack.Controls.WindowsForms.ExplorerBrowser";
-            this.Browser.Size = new System.Drawing.Size(515, 384);
+            this.Browser.Size = new System.Drawing.Size(515, 355);
             this.Browser.TabIndex = 2;
             this.Browser.ItemsChanged += new System.EventHandler(this.Browser_ItemsChanged);
             this.Browser.NavigationComplete += new System.EventHandler<Microsoft.WindowsAPICodePack.Controls.NavigationCompleteEventArgs>(this.Browser_NavigationComplete);
-            // 
-            // TopToolStrip
-            // 
-            this.TopToolStrip.Dock = System.Windows.Forms.DockStyle.None;
-            this.TopToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CheckOutButton,
-            this.SyncButton,
-            this.toolStripSeparator1,
-            this.ChangedLabel,
-            this.GForgeActiveLabel});
-            this.TopToolStrip.Location = new System.Drawing.Point(3, 0);
-            this.TopToolStrip.Name = "TopToolStrip";
-            this.TopToolStrip.Size = new System.Drawing.Size(255, 25);
-            this.TopToolStrip.TabIndex = 1;
             // 
             // CheckOutButton
             // 
@@ -130,37 +100,127 @@
             this.GForgeActiveLabel.ToolTipText = "This folder is synchronized to a GForge Project.  Click to visit the Document Man" +
     "ager for the project.";
             // 
+            // BackButton
+            // 
+            this.BackButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.BackButton.Image = ((System.Drawing.Image)(resources.GetObject("BackButton.Image")));
+            this.BackButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BackButton.Name = "BackButton";
+            this.BackButton.Size = new System.Drawing.Size(23, 22);
+            // 
+            // ForwardButton
+            // 
+            this.ForwardButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ForwardButton.Image = ((System.Drawing.Image)(resources.GetObject("ForwardButton.Image")));
+            this.ForwardButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ForwardButton.Name = "ForwardButton";
+            this.ForwardButton.Size = new System.Drawing.Size(23, 22);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // RefreshButton
+            // 
+            this.RefreshButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.RefreshButton.Image = ((System.Drawing.Image)(resources.GetObject("RefreshButton.Image")));
+            this.RefreshButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.RefreshButton.Name = "RefreshButton";
+            this.RefreshButton.Size = new System.Drawing.Size(23, 22);
+            this.RefreshButton.Text = "toolStripButton3";
+            // 
+            // LocationText
+            // 
+            this.LocationText.AutoSize = false;
+            this.LocationText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LocationText.MaxLength = 1024;
+            this.LocationText.Name = "LocationText";
+            this.LocationText.Size = new System.Drawing.Size(100, 23);
+            // 
+            // toolStripButton4
+            // 
+            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
+            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton4.Name = "toolStripButton4";
+            this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton4.Text = "toolStripButton4";
+            // 
+            // LocationLabel
+            // 
+            this.LocationLabel.Name = "LocationLabel";
+            this.LocationLabel.Size = new System.Drawing.Size(59, 22);
+            this.LocationLabel.Text = "Location: ";
+            // 
+            // pnlTop
+            // 
+            this.pnlTop.ColumnCount = 1;
+            this.pnlTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.pnlTop.Controls.Add(this.NavStrip, 0, 0);
+            this.pnlTop.Controls.Add(this.ActionStrip, 0, 1);
+            this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlTop.Location = new System.Drawing.Point(0, 0);
+            this.pnlTop.Name = "pnlTop";
+            this.pnlTop.RowCount = 2;
+            this.pnlTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.pnlTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.pnlTop.Size = new System.Drawing.Size(515, 54);
+            this.pnlTop.TabIndex = 3;
+            // 
+            // NavStrip
+            // 
+            this.NavStrip.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.NavStrip.Location = new System.Drawing.Point(0, 0);
+            this.NavStrip.Name = "NavStrip";
+            this.NavStrip.Size = new System.Drawing.Size(515, 27);
+            this.NavStrip.TabIndex = 0;
+            this.NavStrip.Text = "toolStrip1";
+            // 
+            // ActionStrip
+            // 
+            this.ActionStrip.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ActionStrip.Location = new System.Drawing.Point(0, 27);
+            this.ActionStrip.Name = "ActionStrip";
+            this.ActionStrip.Size = new System.Drawing.Size(515, 27);
+            this.ActionStrip.TabIndex = 1;
+            this.ActionStrip.Text = "toolStrip1";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(515, 409);
-            this.Controls.Add(this.MainContainer);
+            this.Controls.Add(this.Browser);
+            this.Controls.Add(this.pnlTop);
             this.Name = "MainForm";
             this.Text = "GForge Document Sync";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
-            this.MainContainer.ContentPanel.ResumeLayout(false);
-            this.MainContainer.TopToolStripPanel.ResumeLayout(false);
-            this.MainContainer.TopToolStripPanel.PerformLayout();
-            this.MainContainer.ResumeLayout(false);
-            this.MainContainer.PerformLayout();
-            this.TopToolStrip.ResumeLayout(false);
-            this.TopToolStrip.PerformLayout();
+            this.pnlTop.ResumeLayout(false);
+            this.pnlTop.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ToolStripContainer MainContainer;
         private Microsoft.WindowsAPICodePack.Controls.WindowsForms.ExplorerBrowser Browser;
-        private System.Windows.Forms.ToolStrip TopToolStrip;
         private System.Windows.Forms.ToolStripButton CheckOutButton;
         private System.Windows.Forms.ToolStripButton SyncButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripLabel ChangedLabel;
         private System.Windows.Forms.ToolStripLabel GForgeActiveLabel;
+        private System.Windows.Forms.ToolStripButton BackButton;
+        private System.Windows.Forms.ToolStripButton ForwardButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton RefreshButton;
+        private System.Windows.Forms.ToolStripLabel LocationLabel;
+        private System.Windows.Forms.ToolStripTextBox LocationText;
+        private System.Windows.Forms.ToolStripButton toolStripButton4;
+        private System.Windows.Forms.TableLayoutPanel pnlTop;
+        private System.Windows.Forms.ToolStrip NavStrip;
+        private System.Windows.Forms.ToolStrip ActionStrip;
 
 
     }

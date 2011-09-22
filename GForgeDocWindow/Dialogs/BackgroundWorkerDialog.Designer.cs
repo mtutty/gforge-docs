@@ -43,7 +43,7 @@
             this.tableLayoutPanel1.Controls.Add(this.btnCancel, 0, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -59,21 +59,20 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(2, 8);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 8, 2, 10);
+            this.label1.AutoEllipsis = true;
+            this.label1.Location = new System.Drawing.Point(2, 2);
+            this.label1.Margin = new System.Windows.Forms.Padding(2);
             this.label1.Name = "label1";
-            this.label1.Padding = new System.Windows.Forms.Padding(2);
-            this.label1.Size = new System.Drawing.Size(299, 17);
+            this.label1.Size = new System.Drawing.Size(299, 33);
             this.label1.TabIndex = 1;
-            this.label1.Text = "label1";
+            this.label1.Text = "Please wait...";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // picWaitImage
             // 
             this.picWaitImage.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.picWaitImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.picWaitImage.Location = new System.Drawing.Point(127, 38);
+            this.picWaitImage.Location = new System.Drawing.Point(127, 40);
             this.picWaitImage.Name = "picWaitImage";
             this.picWaitImage.Size = new System.Drawing.Size(48, 48);
             this.picWaitImage.TabIndex = 3;
