@@ -109,6 +109,7 @@
     <Compile Include="Util\GForgeProxy.cs" />
     <Compile Include="Util\LocalFileService.cs" />
     <Compile Include="Util\DocmanFolderExt.cs" />
+    <Compile Include="Util\StringHistoryList.cs" />
     <EmbeddedResource Include="Dialogs\BackgroundWorkerDialog.resx">
       <DependentUpon>BackgroundWorkerDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -163,6 +164,7 @@
     <EmbeddedResource Include="res\wait_animated.gif" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="res\checkout-16.png" />
     <Content Include="res\gforge.ico" />
     <None Include="res\gforge_g_color.png" />
   </ItemGroup>

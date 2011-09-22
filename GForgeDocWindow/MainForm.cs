@@ -16,6 +16,9 @@ namespace GForgeDocWindow {
         private IList<Project> projects = null;
         private LocalFileService lfs = new LocalFileService();
 
+        private const int MaxHistory = 20;
+        private StringHistoryList history = new StringHistoryList(MaxHistory);
+
         public MainForm(string startPath) {
             InitializeComponent();
 
@@ -43,40 +46,91 @@ namespace GForgeDocWindow {
         }
 
         private void Browser_ItemsChanged(object sender, EventArgs e) {
-            //Console.WriteLine(string.Format(@"Items Changed in {0}", currentLocation.ParsingName));
             SetToolBarStatus(currentLocation.ParsingName);
         }
 
         private void Browser_NavigationComplete(object sender, Microsoft.WindowsAPICodePack.Controls.NavigationCompleteEventArgs e) {
             currentLocation = e.NewLocation;
+            this.history.AddHistory(currentLocation.ParsingName);
             SetToolBarStatus(currentLocation.ParsingName);
             this.Text = currentLocation.ParsingName;
         }
 
+        /*
+         * In case they go away, this goes in the designer file
+            this.NavStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+                this.NavBackButton,
+                this.NavForwardButton,
+                this.toolStripSeparator1,
+                this.NavRefreshButton,
+                this.LocationLabel,
+                this.LocationText,
+                this.NavGoButton
+            });
+        */
+
+        /*
+         * In case they go away, this goes in the designer file
+            this.ActionStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+                this.CheckOutButton,
+                this.SyncButton,
+                this.GForgeActiveLabel,
+                this.ChangedLabel
+            });
+         
+         */
+
         private void SetToolBarStatus(string location) {
-            //try {
-            //    this.ActionStrip.SuspendLayout();
-            //    this.GForgeActiveLabel.Enabled = lfs.IsSyncedFolder(location);
-            //    if (this.GForgeActiveLabel.Enabled) {
-            //        this.ChangedLabel.Enabled = lfs.HasChanges(location, true);
-            //        this.SyncButton.Enabled = true;
-            //        this.CheckOutButton.Enabled = false;
-            //    } else {
-            //        this.ChangedLabel.Enabled = false;
-            //        this.SyncButton.Enabled = false;
-            //        this.CheckOutButton.Enabled = true;
-            //    }
-            //} catch (Exception ex) {
-            //    Console.WriteLine(ex.Message);
+            try {
+                this.ActionStrip.SuspendLayout();
+                LocalFileService.SyncFolderInfo fld = lfs.GetFolderInfo(location);
+                if (fld == null) {
+                    this.CheckOutButton.Enabled = false;
+                    this.SyncButton.Enabled = true;
 
-            //    this.SyncButton.Enabled = false;
-            //    this.CheckOutButton.Enabled = false;
-            //    this.GForgeActiveLabel.Enabled = false;
-            //    this.ChangedLabel.Enabled = false;
+                    this.GForgeActiveLabel.Enabled = true;
+                    this.GForgeActiveLabel.ToolTipText = @"This folder syncs to a GForge Docs folder";
+                    
+                    this.ChangedLabel.Enabled = lfs.HasChanges(location, true);
+                } else {
+                    this.CheckOutButton.Enabled = true;
+                    this.SyncButton.Enabled = false;
 
-            //} finally {
-            //    this.ActionStrip.ResumeLayout();
-            //}
+                    this.GForgeActiveLabel.Enabled = true;
+                    this.GForgeActiveLabel.ToolTipText = @"This folder does not sync to a GForge Docs folder";
+
+                    this.ChangedLabel.Enabled = false;
+                }
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+
+                this.SyncButton.Enabled = false;
+                this.CheckOutButton.Enabled = false;
+                this.GForgeActiveLabel.Enabled = false;
+                this.ChangedLabel.Enabled = false;
+
+            } finally {
+                this.ActionStrip.ResumeLayout();
+            }
+
+
+            try {
+                this.NavStrip.SuspendLayout();
+
+                this.LocationText.Text = location;
+
+                if (this.history.Count > 1) {
+                    this.NavBackButton.Enabled = true;
+                } else {
+                    this.NavBackButton.Enabled = false;
+                }
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+
+            } finally {
+                this.NavStrip.SuspendLayout();
+            }
+
         }
 
         private void CheckOutButton_Click(object sender, EventArgs e) {
@@ -156,7 +210,34 @@ namespace GForgeDocWindow {
         }
 
         private void MainForm_Resize(object sender, EventArgs e) {
-            this.LocationBox.TextBox.Size = new System.Drawing.Size(this.Size.Width - 230, this.LocationBox.TextBox.Size.Height);
+
+            /* TODO:  Get the text box to spring to fill available space
+                int width = toolStrip1.DisplayRectangle.Width;
+                foreach (ToolStripItem tsi in toolStrip1.Items){
+                      if (!(tsi == toolStripTextBox))
+                      {
+                      width -= tsi.Width;
+                      width -= tsi.Margin.Horizontal;
+                      }
+                   }
+                toolStripTextBox.Width = Math.Max(0, width - toolStripTextBox.Margin.Horizontal);
+             */
+            this.LocationBox.Size = new System.Drawing.Size(this.Size.Width - 230, this.LocationBox.TextBox.Size.Height);
+        }
+
+        private void NavBackButton_Click(object sender, EventArgs e) {
+            string newPath = this.history.RecallHistory();
+            if (!string.IsNullOrEmpty(newPath))
+                this.Browser.Navigate(ShellFileSystemFolder.FromFolderPath(newPath));
+        }
+
+        private void NavGoButton_Click(object sender, EventArgs e) {
+            string newPath = this.LocationText.Text;
+            if (Directory.Exists(newPath)) {
+                this.Browser.Navigate(ShellFileSystemFolder.FromFolderPath(newPath));
+            } else {
+                this.LocationText.Text = this.currentLocation.ParsingName;
+            }
         }
     }
 }

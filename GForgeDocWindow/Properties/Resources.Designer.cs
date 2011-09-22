@@ -67,6 +67,13 @@ namespace GForgeDocWindow.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap checkout_16 {
+            get {
+                object obj = ResourceManager.GetObject("checkout_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap forward_16 {
             get {
                 object obj = ResourceManager.GetObject("forward_16", resourceCulture);

@@ -33,14 +33,19 @@
             this.NavStrip = new System.Windows.Forms.ToolStrip();
             this.NavBackButton = new System.Windows.Forms.ToolStripButton();
             this.NavForwardButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.NavRefreshButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.LocationBox = new System.Windows.Forms.ToolStripTextBox();
             this.NavGoButton = new System.Windows.Forms.ToolStripButton();
             this.ActionStrip = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.CheckOutButton = new System.Windows.Forms.ToolStripButton();
+            this.SyncButton = new System.Windows.Forms.ToolStripButton();
+            this.GForgeActiveLabel = new System.Windows.Forms.ToolStripLabel();
+            this.ChangedLabel = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.LocationBox = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.pnlTop.SuspendLayout();
             this.NavStrip.SuspendLayout();
             this.ActionStrip.SuspendLayout();
@@ -61,7 +66,7 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
             // 
             // toolStripSeparator2
             // 
@@ -74,12 +79,12 @@
             this.LocationText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.LocationText.MaxLength = 1024;
             this.LocationText.Name = "LocationText";
-            this.LocationText.Size = new System.Drawing.Size(100, 23);
+            this.LocationText.Size = new System.Drawing.Size(320, 23);
             // 
             // LocationLabel
             // 
             this.LocationLabel.Name = "LocationLabel";
-            this.LocationLabel.Size = new System.Drawing.Size(59, 22);
+            this.LocationLabel.Size = new System.Drawing.Size(59, 24);
             this.LocationLabel.Text = "Location: ";
             // 
             // pnlTop
@@ -100,6 +105,14 @@
             // NavStrip
             // 
             this.NavStrip.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.NavStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.NavBackButton,
+            this.NavForwardButton,
+            this.toolStripSeparator1,
+            this.NavRefreshButton,
+            this.LocationLabel,
+            this.LocationText,
+            this.NavGoButton});
             this.NavStrip.Location = new System.Drawing.Point(0, 0);
             this.NavStrip.Name = "NavStrip";
             this.NavStrip.Size = new System.Drawing.Size(524, 27);
@@ -114,6 +127,7 @@
             this.NavBackButton.Name = "NavBackButton";
             this.NavBackButton.Size = new System.Drawing.Size(23, 24);
             this.NavBackButton.Text = "toolStripButton1";
+            this.NavBackButton.Click += new System.EventHandler(this.NavBackButton_Click);
             // 
             // NavForwardButton
             // 
@@ -124,11 +138,6 @@
             this.NavForwardButton.Size = new System.Drawing.Size(23, 24);
             this.NavForwardButton.Text = "toolStripButton2";
             // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 27);
-            // 
             // NavRefreshButton
             // 
             this.NavRefreshButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -137,6 +146,70 @@
             this.NavRefreshButton.Name = "NavRefreshButton";
             this.NavRefreshButton.Size = new System.Drawing.Size(23, 24);
             this.NavRefreshButton.Text = "toolStripButton3";
+            // 
+            // NavGoButton
+            // 
+            this.NavGoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.NavGoButton.Image = global::GForgeDocWindow.Properties.Resources.Go;
+            this.NavGoButton.ImageTransparentColor = System.Drawing.Color.White;
+            this.NavGoButton.Name = "NavGoButton";
+            this.NavGoButton.Size = new System.Drawing.Size(23, 24);
+            this.NavGoButton.Text = "toolStripButton5";
+            this.NavGoButton.Click += new System.EventHandler(this.NavGoButton_Click);
+            // 
+            // ActionStrip
+            // 
+            this.ActionStrip.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ActionStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CheckOutButton,
+            this.SyncButton,
+            this.GForgeActiveLabel,
+            this.ChangedLabel});
+            this.ActionStrip.Location = new System.Drawing.Point(0, 27);
+            this.ActionStrip.Name = "ActionStrip";
+            this.ActionStrip.Size = new System.Drawing.Size(524, 27);
+            this.ActionStrip.TabIndex = 1;
+            this.ActionStrip.Text = "toolStrip1";
+            // 
+            // CheckOutButton
+            // 
+            this.CheckOutButton.Image = global::GForgeDocWindow.Properties.Resources.checkout_16;
+            this.CheckOutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.CheckOutButton.Name = "CheckOutButton";
+            this.CheckOutButton.Size = new System.Drawing.Size(83, 24);
+            this.CheckOutButton.Text = "Check Out";
+            this.CheckOutButton.ToolTipText = "Set up a local copy of a GForge docs folder (and its contents)";
+            // 
+            // SyncButton
+            // 
+            this.SyncButton.Image = global::GForgeDocWindow.Properties.Resources.sync_16;
+            this.SyncButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SyncButton.Name = "SyncButton";
+            this.SyncButton.Size = new System.Drawing.Size(78, 24);
+            this.SyncButton.Text = "Sync Files";
+            this.SyncButton.ToolTipText = "Sync the current directory (and its contents) with corresponding GForge Docs fold" +
+    "er";
+            // 
+            // GForgeActiveLabel
+            // 
+            this.GForgeActiveLabel.Image = global::GForgeDocWindow.Properties.Resources.gforge_g;
+            this.GForgeActiveLabel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.GForgeActiveLabel.Name = "GForgeActiveLabel";
+            this.GForgeActiveLabel.Size = new System.Drawing.Size(85, 24);
+            this.GForgeActiveLabel.Text = "(no project)";
+            this.GForgeActiveLabel.ToolTipText = "This folder is not linked to a GForge Docs folder";
+            // 
+            // ChangedLabel
+            // 
+            this.ChangedLabel.Name = "ChangedLabel";
+            this.ChangedLabel.Size = new System.Drawing.Size(55, 24);
+            this.ChangedLabel.Text = "CHANGE";
+            this.ChangedLabel.ToolTipText = "This folder (or its children) has local changes to submit";
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 27);
             // 
             // toolStripLabel1
             // 
@@ -152,24 +225,6 @@
             this.LocationBox.Name = "LocationBox";
             this.LocationBox.Size = new System.Drawing.Size(300, 23);
             // 
-            // NavGoButton
-            // 
-            this.NavGoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.NavGoButton.Image = global::GForgeDocWindow.Properties.Resources.Go;
-            this.NavGoButton.ImageTransparentColor = System.Drawing.Color.White;
-            this.NavGoButton.Name = "NavGoButton";
-            this.NavGoButton.Size = new System.Drawing.Size(23, 24);
-            this.NavGoButton.Text = "toolStripButton5";
-            // 
-            // ActionStrip
-            // 
-            this.ActionStrip.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ActionStrip.Location = new System.Drawing.Point(0, 27);
-            this.ActionStrip.Name = "ActionStrip";
-            this.ActionStrip.Size = new System.Drawing.Size(524, 27);
-            this.ActionStrip.TabIndex = 1;
-            this.ActionStrip.Text = "toolStrip1";
-            // 
             // toolStripButton4
             // 
             this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -179,14 +234,23 @@
             this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton4.Text = "toolStripButton4";
             // 
-            // CheckOutButton
+            // toolStripButton1
             // 
-            this.CheckOutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.CheckOutButton.Image = ((System.Drawing.Image)(resources.GetObject("CheckOutButton.Image")));
-            this.CheckOutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.CheckOutButton.Name = "CheckOutButton";
-            this.CheckOutButton.Size = new System.Drawing.Size(67, 24);
-            this.CheckOutButton.Text = "Check Out";
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 24);
+            this.toolStripButton1.Text = "toolStripButton1";
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(23, 24);
+            this.toolStripButton2.Text = "toolStripButton2";
             // 
             // MainForm
             // 
@@ -223,7 +287,6 @@
         private System.Windows.Forms.TableLayoutPanel pnlTop;
         private System.Windows.Forms.ToolStrip NavStrip;
         private System.Windows.Forms.ToolStrip ActionStrip;
-        private System.Windows.Forms.ToolStripButton NavBackButton;
         private System.Windows.Forms.ToolStripButton NavForwardButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton NavRefreshButton;
@@ -231,6 +294,12 @@
         private System.Windows.Forms.ToolStripTextBox LocationBox;
         private System.Windows.Forms.ToolStripButton NavGoButton;
         private System.Windows.Forms.ToolStripButton CheckOutButton;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton SyncButton;
+        private System.Windows.Forms.ToolStripLabel GForgeActiveLabel;
+        private System.Windows.Forms.ToolStripLabel ChangedLabel;
+        private System.Windows.Forms.ToolStripButton NavBackButton;
 
 
     }
