@@ -86,7 +86,7 @@ namespace GForgeDocWindow.Util {
 
         public void DownloadFile(string url, string destinationFile, DateTime lastChanged) {
             System.Net.WebClient wc = new System.Net.WebClient();
-            string tempFile = this.BuildPath(destinationFile, @".tmp");
+            string tempFile = destinationFile + @".tmp";    // Do NOT use this.BuildPath or Path.Combine for this!
             wc.DownloadFile(url, tempFile);
             if (File.Exists(destinationFile)) File.Delete(destinationFile);
             File.Move(tempFile, destinationFile);

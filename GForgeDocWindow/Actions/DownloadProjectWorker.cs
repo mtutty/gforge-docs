@@ -149,7 +149,9 @@ namespace GForgeDocWindow.Actions {
 
         public void UpdateLocalFile(int docId, string destinationFile, DateTime lastChanged) {
             Filesystem file = this.proxy.getFilesystem(this.proxy.Token, docId);
-            lfs.DownloadFile(file.download_url, destinationFile, lastChanged);
+            //lfs.DownloadFile(this.proxy.ServerURL + file.download_url, destinationFile, lastChanged);
+            FilesystemData data = this.proxy.getFilesystemData(this.proxy.Token, file.filesystem_id);
+            this.lfs.WriteFile(destinationFile, data.file_data, lastChanged);
         }
 
     }

@@ -110,6 +110,9 @@
     <Compile Include="Util\LocalFileService.cs" />
     <Compile Include="Util\DocmanFolderExt.cs" />
     <Compile Include="Util\StringHistoryList.cs" />
+    <Compile Include="Util\ToolStripSpringTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="Dialogs\BackgroundWorkerDialog.resx">
       <DependentUpon>BackgroundWorkerDialog.cs</DependentUpon>
     </EmbeddedResource>

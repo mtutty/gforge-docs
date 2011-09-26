@@ -7,9 +7,10 @@ namespace GForgeDocWindow.Util {
     public class StringHistoryList : List<string> {
 
         public int MaxCapacity { get; protected set; }
+        public int HistoryIndex { get; protected set; }
 
         public StringHistoryList(int maxCapacity) {
-            if (maxCapacity < 1) throw new ArgumentOutOfRangeException(@"MaxCapacity", @"Max Capacity must be a number grater than zero.");
+            if (maxCapacity < 1) throw new ArgumentOutOfRangeException(@"MaxCapacity", @"Max Capacity must be a number greater than zero.");
             this.MaxCapacity = maxCapacity;
         }
 
@@ -24,16 +25,39 @@ namespace GForgeDocWindow.Util {
                     this.RemoveAt(this.Count - 1);
                 }
             }
+            this.HistoryIndex = 0;
         }
 
-        public string RecallHistory() {
-            if (this.Count > 1) 
-                this.RemoveAt(0);
+        public bool CanGoBack {
+            get {
+                if (this.HistoryIndex < (this.Count - 1)) return true;
+                return false;
+            }
+        }
 
-            if (this.Count > 0)
-                return this[0];
+        public bool CanGoForward {
+            get {
+                if (this.HistoryIndex > 0) return true;
+                return false;
+            }
+        }
 
-            return string.Empty;
+        public string GoBack() {
+            if (this.CanGoBack) this.HistoryIndex += 1;
+            return this.CurrentItem;
+        }
+
+        public string GoForward() {
+            if (this.CanGoForward) this.HistoryIndex -= 1;
+            return this.CurrentItem;
+        }
+
+        public string CurrentItem {
+            get {
+                if (this.Count > this.HistoryIndex)
+                    return this[this.HistoryIndex];
+                return string.Empty;
+            }
         }
     }
 }

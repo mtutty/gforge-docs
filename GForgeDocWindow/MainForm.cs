@@ -23,7 +23,7 @@ namespace GForgeDocWindow {
             InitializeComponent();
 
             if (string.IsNullOrEmpty(startPath) ||
-                ! Directory.Exists(startPath)) {
+                !Directory.Exists(startPath)) {
                 startPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             }
 
@@ -33,17 +33,13 @@ namespace GForgeDocWindow {
                 currentLocation = ShellFileSystemFolder.FromFolderPath(Application.StartupPath);
                 string msg = string.Format(@"Sorry, the path you requested ({0}) does not exist.  Starting in {1} instead.", startPath, currentLocation.Name);
                 MessageBox.Show(msg, @"Invalid Starting Folder", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }            
-            
+            }
+
             if (currentLocation != null)
                 this.Browser.Navigate(currentLocation);
         }
 
         public MainForm() : this(Properties.Settings.Default.CurrentLocation) { }
-
-        private void MainForm_Shown(object sender, EventArgs e) {
-            // Nothing
-        }
 
         private void Browser_ItemsChanged(object sender, EventArgs e) {
             SetToolBarStatus(currentLocation.ParsingName);
@@ -84,13 +80,13 @@ namespace GForgeDocWindow {
             try {
                 this.ActionStrip.SuspendLayout();
                 LocalFileService.SyncFolderInfo fld = lfs.GetFolderInfo(location);
-                if (fld == null) {
+                if (fld != null) {
                     this.CheckOutButton.Enabled = false;
                     this.SyncButton.Enabled = true;
 
                     this.GForgeActiveLabel.Enabled = true;
                     this.GForgeActiveLabel.ToolTipText = @"This folder syncs to a GForge Docs folder";
-                    
+
                     this.ChangedLabel.Enabled = lfs.HasChanges(location, true);
                 } else {
                     this.CheckOutButton.Enabled = true;
@@ -118,17 +114,14 @@ namespace GForgeDocWindow {
                 this.NavStrip.SuspendLayout();
 
                 this.LocationText.Text = location;
+                this.NavBackButton.Enabled = this.history.CanGoBack;
+                this.NavForwardButton.Enabled = this.history.CanGoForward;
 
-                if (this.history.Count > 1) {
-                    this.NavBackButton.Enabled = true;
-                } else {
-                    this.NavBackButton.Enabled = false;
-                }
             } catch (Exception ex) {
                 Console.WriteLine(ex.Message);
 
             } finally {
-                this.NavStrip.SuspendLayout();
+                this.NavStrip.ResumeLayout();
             }
 
         }
@@ -200,6 +193,10 @@ namespace GForgeDocWindow {
             return true;
         }
 
+        private void MainForm_Shown(object sender, EventArgs e) {
+            // Nothing
+        }
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
             try {
                 Properties.Settings.Default.CurrentLocation = this.currentLocation.ParsingName;
@@ -209,35 +206,69 @@ namespace GForgeDocWindow {
             }
         }
 
-        private void MainForm_Resize(object sender, EventArgs e) {
-
-            /* TODO:  Get the text box to spring to fill available space
-                int width = toolStrip1.DisplayRectangle.Width;
-                foreach (ToolStripItem tsi in toolStrip1.Items){
-                      if (!(tsi == toolStripTextBox))
-                      {
-                      width -= tsi.Width;
-                      width -= tsi.Margin.Horizontal;
-                      }
-                   }
-                toolStripTextBox.Width = Math.Max(0, width - toolStripTextBox.Margin.Horizontal);
-             */
-            this.LocationBox.Size = new System.Drawing.Size(this.Size.Width - 230, this.LocationBox.TextBox.Size.Height);
+        void MainForm_Resize(object sender, System.EventArgs e) {
+            //Nothing
+            SetSpringSize(sender, e);
         }
 
-        private void NavBackButton_Click(object sender, EventArgs e) {
-            string newPath = this.history.RecallHistory();
-            if (!string.IsNullOrEmpty(newPath))
-                this.Browser.Navigate(ShellFileSystemFolder.FromFolderPath(newPath));
+        void MainForm_ResizeEnd(object sender, System.EventArgs e) {
+            //SetSpringSize(sender, e);
         }
 
-        private void NavGoButton_Click(object sender, EventArgs e) {
-            string newPath = this.LocationText.Text;
-            if (Directory.Exists(newPath)) {
-                this.Browser.Navigate(ShellFileSystemFolder.FromFolderPath(newPath));
+        private void SetSpringSize(object sender, EventArgs e) {
+            Console.WriteLine(@"Resize start");
+            // Spring location text box to their max size
+            int width = this.NavStrip.DisplayRectangle.Width - 48; // a little extra padding to prevent the overflow indicator
+            Console.WriteLine(@"Resize initial width is {0}", width);
+            foreach (ToolStripItem tsi in NavStrip.Items) {
+                Console.WriteLine(@"Resize found child {0}", tsi.Name);
+                if (!(tsi == this.LocationText)) {
+                    width -= tsi.Width;
+                    width -= tsi.Margin.Horizontal;
+                }
+                Console.WriteLine(@"Resize updated width is {0}", width);
+            }
+            int newWidth = Math.Max(0, width - this.LocationText.Margin.Horizontal);
+            Console.WriteLine(@"Resize, setting location width to {0}", newWidth);
+            this.LocationText.Width = newWidth;
+            Console.WriteLine(@"Resize end");
+        }
+
+        private void NavigateTo(string location) {
+            if (Directory.Exists(location)) {
+                this.Browser.Navigate(ShellFileSystemFolder.FromFolderPath(location));
             } else {
                 this.LocationText.Text = this.currentLocation.ParsingName;
             }
+        }
+
+        private void NavBackButton_Click(object sender, EventArgs e) {
+            this.NavigateTo(this.history.GoBack());
+        }
+
+        private void NavForwardButton_Click(object sender, EventArgs e) {
+            this.NavigateTo(this.history.GoForward());
+        }
+
+        private void NavGoButton_Click(object sender, EventArgs e) {
+            this.NavigateTo(this.LocationText.Text);
+        }
+
+        private void NavRefreshButton_Click(object sender, EventArgs e) {
+            this.NavigateTo(this.currentLocation.ParsingName);
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e) {
+            if (this.LocationText.Focused && e.KeyCode == Keys.Enter) {
+                e.SuppressKeyPress = true;
+                e.Handled = true;
+                this.NavigateTo(this.LocationText.Text);
+            }
+
+        }
+
+        private void SyncButton_Click(object sender, EventArgs e) {
+            // TODO:  Implement sync for existing folders
         }
     }
 }

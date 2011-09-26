@@ -39,7 +39,7 @@
             this.txtPassword.Location = new System.Drawing.Point(87, 104);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(88, 22);
-            this.txtPassword.TabIndex = 2;
+            this.txtPassword.TabIndex = 5;
             this.txtPassword.UseSystemPasswordChar = true;
             // 
             // lblLoginHeader
@@ -50,7 +50,7 @@
             this.lblLoginHeader.Location = new System.Drawing.Point(2, 0);
             this.lblLoginHeader.Name = "lblLoginHeader";
             this.lblLoginHeader.Size = new System.Drawing.Size(380, 33);
-            this.lblLoginHeader.TabIndex = 0;
+            this.lblLoginHeader.TabIndex = 8;
             this.lblLoginHeader.Text = "Log On to GForge Server";
             this.lblLoginHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -60,7 +60,7 @@
             this.label1.Location = new System.Drawing.Point(14, 49);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(61, 13);
-            this.label1.TabIndex = 1;
+            this.label1.TabIndex = 0;
             this.label1.Text = "Server URL";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -70,7 +70,7 @@
             this.label2.Location = new System.Drawing.Point(35, 78);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 13);
-            this.label2.TabIndex = 3;
+            this.label2.TabIndex = 2;
             this.label2.Text = "User ID";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -80,7 +80,7 @@
             this.label3.Location = new System.Drawing.Point(20, 107);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(56, 13);
-            this.label3.TabIndex = 5;
+            this.label3.TabIndex = 4;
             this.label3.Text = "Password";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -90,7 +90,7 @@
             this.Cancel.Location = new System.Drawing.Point(297, 104);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(75, 24);
-            this.Cancel.TabIndex = 3;
+            this.Cancel.TabIndex = 7;
             this.Cancel.Text = "&Cancel";
             this.Cancel.UseVisualStyleBackColor = true;
             // 
@@ -100,7 +100,7 @@
             this.OK.Location = new System.Drawing.Point(216, 104);
             this.OK.Name = "OK";
             this.OK.Size = new System.Drawing.Size(75, 24);
-            this.OK.TabIndex = 4;
+            this.OK.TabIndex = 6;
             this.OK.Text = "&OK";
             this.OK.UseVisualStyleBackColor = true;
             // 
@@ -109,14 +109,14 @@
             this.txtUserID.Location = new System.Drawing.Point(87, 75);
             this.txtUserID.Name = "txtUserID";
             this.txtUserID.Size = new System.Drawing.Size(177, 22);
-            this.txtUserID.TabIndex = 1;
+            this.txtUserID.TabIndex = 3;
             // 
             // txtServerURL
             // 
             this.txtServerURL.Location = new System.Drawing.Point(87, 46);
             this.txtServerURL.Name = "txtServerURL";
             this.txtServerURL.Size = new System.Drawing.Size(285, 22);
-            this.txtServerURL.TabIndex = 0;
+            this.txtServerURL.TabIndex = 1;
             // 
             // LogonDialog
             // 
