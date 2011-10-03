@@ -47,9 +47,19 @@ namespace GForgeDocWindow {
 
         private void Browser_NavigationComplete(object sender, Microsoft.WindowsAPICodePack.Controls.NavigationCompleteEventArgs e) {
             currentLocation = e.NewLocation;
-            this.history.AddHistory(currentLocation.ParsingName);
-            SetToolBarStatus(currentLocation.ParsingName);
-            this.Text = currentLocation.ParsingName;
+
+            string locationText = currentLocation.ParsingName;
+            this.history.AddHistory(locationText);
+            SetToolBarStatus(locationText);
+            this.LocationText.Text = locationText;
+            this.Text = @"GForge Document Manager - " + locationText;
+        }
+
+        private void Browser_SelectionChanged(object sender, EventArgs e) {
+            if (this.Browser.SelectedItems.Count > 0)
+                SetToolBarStatus(this.Browser.SelectedItems[0].ParsingName);
+            else
+                SetToolBarStatus(this.currentLocation.ParsingName);
         }
 
         /*
@@ -113,7 +123,6 @@ namespace GForgeDocWindow {
             try {
                 this.NavStrip.SuspendLayout();
 
-                this.LocationText.Text = location;
                 this.NavBackButton.Enabled = this.history.CanGoBack;
                 this.NavForwardButton.Enabled = this.history.CanGoForward;
 
@@ -270,5 +279,6 @@ namespace GForgeDocWindow {
         private void SyncButton_Click(object sender, EventArgs e) {
             // TODO:  Implement sync for existing folders
         }
+
     }
 }

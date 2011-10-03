@@ -54,6 +54,7 @@
             this.DisplayText.ReadOnly = true;
             this.DisplayText.Size = new System.Drawing.Size(278, 208);
             this.DisplayText.TabIndex = 0;
+            this.DisplayText.WordWrap = false;
             // 
             // CloseButton
             // 

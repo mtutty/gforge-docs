@@ -59,5 +59,32 @@ namespace GForgeDocWindow.Util {
             get { return token; }
             set { token = value; }
         }
+
+        public IList<DocmanFolder> BuildFolderTree(DocmanFolder[] folders) {
+
+            Dictionary<int, DocmanFolder> sortingHat = new Dictionary<int, DocmanFolder>();
+            IList<DocmanFolder> ret = new List<DocmanFolder>();
+
+            // Rip through once, building a keyed listing for future reference
+            foreach (DocmanFolder fld in folders) {
+                sortingHat.Add(fld.docman_folder_id, fld);
+            }
+
+            // Go through again, adding children to parent listings
+            foreach (DocmanFolder fld in folders) {
+                // If it's a root folder, add to the ret collection
+                if (fld.parent_folder_id == 0) {
+                    ret.Add(fld);
+                } else {
+                    DocmanFolder parent = sortingHat[fld.parent_folder_id];
+                    if (parent == null)
+                        throw new InvalidOperationException(string.Format(@"Folder {0} (id {1}) references a non-existent parent folder {2}", fld.folder_name, fld.docman_folder_id, fld.parent_folder_id));
+                    parent.ChildFolders.Add(fld);
+                }
+            }
+
+            return ret;
+        }
+
     }
 }

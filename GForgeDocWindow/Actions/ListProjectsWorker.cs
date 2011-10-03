@@ -5,39 +5,22 @@ using GForgeDocWindow.Util;
 using System.ComponentModel;
 
 namespace GForgeDocWindow.Actions {
-    public class ListProjectsWorker : BackgroundWorker {
+    public class ListProjectsWorker : BackgroundWorkerBase {
 
         public GForgeProxy Proxy { get; private set; }
         public IList<Project> Projects { get; private set; }
-        public string Error { get; set; }
 
-        public ListProjectsWorker() : base() {
-            this.DoWork += new DoWorkEventHandler(ListProjectsWorker_DoWork);
-            this.WorkerReportsProgress = true;
-        }
+        public ListProjectsWorker() : base() { }
 
         public ListProjectsWorker(GForgeProxy proxy)
             : this() {
-                this.Proxy = proxy;
+            this.Proxy = proxy;
         }
 
-        public void ListProjectsWorker_DoWork(object sender, DoWorkEventArgs e) {
-            try {
-                if (this.CancellationPending) {
-                    return;
-                }
-
-                this.ReportProgress(10, string.Format(@"Retrieving the list of projects for {0}", this.Proxy.UserID));
-                this.Projects = this.Proxy.getUserProjects(this.Proxy.Token, this.Proxy.UnixName);
-
-                if (this.CancellationPending) {
-                    return;
-                }
-
-            } catch (Exception ex) {
-                this.Error = ex.Message;
-                throw;
-            }
+        public override void Work() {
+            if (!this.CheckProgress(10, @"Retrieving the list of projects for {0}", this.Proxy.UserID)) return;
+            this.Projects = this.Proxy.getUserProjects(this.Proxy.Token, this.Proxy.UnixName);
+            if (!this.CheckProgress(90, @"Retrieved the list of projects for {0}", this.Proxy.UserID)) return;
         }
 
     }

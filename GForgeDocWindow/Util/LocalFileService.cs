@@ -52,6 +52,14 @@ namespace GForgeDocWindow.Util {
             return Path.Combine(paths);
         }
 
+        public string TrimPath(string path, int maxLength) {
+            string ret = path;
+            if (ret.Length > maxLength) {
+                ret = ret.Substring(0, maxLength - 3) + @"...";
+            }
+            return ret;
+        }
+
         public SyncFolderInfo GetFolderInfo(string path) {
             if (IsSyncedFolder(path) == false) return null;
             string repoFile = RepositoryFileFor(path);
@@ -80,13 +88,20 @@ namespace GForgeDocWindow.Util {
         }
 
         public void WriteFile(string destinationFile, string base64Data, DateTime lastChanged) {
+            using (FileStream fs = File.Create(destinationFile)) {
+                using (BinaryWriter bw = new BinaryWriter(fs)) {
+                    bw.Write(Convert.FromBase64String(base64Data));
+                }
+            };
+
             File.WriteAllBytes(destinationFile, Convert.FromBase64String(base64Data));
             File.SetLastWriteTime(destinationFile, lastChanged);
         }
 
-        public void DownloadFile(string url, string destinationFile, DateTime lastChanged) {
+        public void DownloadFile(string url, string destinationFile, string sessionHash, DateTime lastChanged) {
             System.Net.WebClient wc = new System.Net.WebClient();
             string tempFile = destinationFile + @".tmp";    // Do NOT use this.BuildPath or Path.Combine for this!
+            wc.Headers[@"sessionHash"] = System.Uri.EscapeDataString(sessionHash);
             wc.DownloadFile(url, tempFile);
             if (File.Exists(destinationFile)) File.Delete(destinationFile);
             File.Move(tempFile, destinationFile);

@@ -5,17 +5,13 @@ using GForgeDocWindow.Util;
 using System.ComponentModel;
 
 namespace GForgeDocWindow.Actions {
-    public class LogonActionWorker : BackgroundWorker {
+    public class LogonActionWorker : BackgroundWorkerBase {
         public string UserID { get; set; }
         public string Password { get; set; }
         public string Url { get; set; }
         public GForgeProxy Proxy { get; private set; }
-        public string Error { get; set; }
 
-        public LogonActionWorker() : base() {
-            this.DoWork += new DoWorkEventHandler(LogonActionWorker_DoWork);
-            this.WorkerReportsProgress = true;
-        }
+        public LogonActionWorker() : base() { }
 
         public LogonActionWorker(string url, string userID, string password)
             : this() {
@@ -24,33 +20,15 @@ namespace GForgeDocWindow.Actions {
             this.Password = password;
         }
 
-        public void LogonActionWorker_DoWork(object sender, DoWorkEventArgs e) {
-            try {
-                if (this.CancellationPending) {
-                    return;
-                }
+        public override void Work() {
+            if (!this.CheckProgress(10, @"Contacting the GForge server at {0}", this.Url)) return;
+            this.Proxy = new GForgeProxy(this.Url, this.UserID);
 
-                this.ReportProgress(10, string.Format(@"Contacting the GForge server at {0}", this.Url));
-                this.Proxy = new GForgeProxy(this.Url, this.UserID);
+            if (!this.CheckProgress(15, @"Logging in as {0}", this.UserID)) return;
+            string token = this.Proxy.login(this.UserID, this.Password);
 
-                if (this.CancellationPending) {
-                    return;
-                }
-
-                this.ReportProgress(15, string.Format(@"Logging in as {0}", this.UserID));
-                string token = this.Proxy.login(this.UserID, this.Password);
-
-                if (this.CancellationPending) {
-                    return;
-                }
-
-                this.Proxy.Token = token;
-                this.ReportProgress(90, string.Format(@"Success! Logged in as {0}", this.UserID));
-
-            } catch (Exception ex) {
-                this.Error = ex.Message;
-                throw;
-            }
+            this.Proxy.Token = token;
+            if (!this.CheckProgress(90, @"Success! Logged in as {0}", this.UserID)) return;
         }
     }
 }

@@ -36,7 +36,7 @@ namespace GForgeDocWindow.Dialogs {
 
         private void btnCancel_Click(object sender, EventArgs e) {
             label1.Text = "Cancelling...";
-            backgroundWorker1.CancelAsync(); // Tell worker to abort.
+            backgroundWorker1.CancelAsync();
             btnCancel.Enabled = false;
         }
 
@@ -45,9 +45,12 @@ namespace GForgeDocWindow.Dialogs {
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
-            if (e.Error != null) this.DialogResult = System.Windows.Forms.DialogResult.Abort;
-            if (e.Cancelled) this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            if (e.Error != null) 
+                this.DialogResult = System.Windows.Forms.DialogResult.Abort;
+            else if (e.Cancelled) 
+                this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            else
+                this.DialogResult = System.Windows.Forms.DialogResult.OK;
         }
 
         private void AnimateWaitImage(object sender, EventArgs e) {

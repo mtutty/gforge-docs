@@ -6,22 +6,14 @@ using System.ComponentModel;
 using System.Net;
 
 namespace GForgeDocWindow.Actions {
-    public class DownloadProjectWorker : BackgroundWorker {
+    public class DownloadProjectWorker : BackgroundWorkerBase {
 
         private GForgeProxy proxy;
         private LocalFileService lfs;
         private int project_id;
         private string targetFolder;
-        private int percentComplete = 0;
-        private int increment = 1;
 
-        public string Error { get; set; }
-
-        public DownloadProjectWorker()
-            : base() {
-            this.DoWork += new DoWorkEventHandler(DownloadProjectWorker_DoWork);
-            this.WorkerReportsProgress = true;
-        }
+        public DownloadProjectWorker() : base() { }
 
         public DownloadProjectWorker(LocalFileService lfs, GForgeProxy proxy, int project_id, string targetFolder)
             : this() {
@@ -31,80 +23,35 @@ namespace GForgeDocWindow.Actions {
             this.targetFolder = targetFolder;
         }
 
-        public void DownloadProjectWorker_DoWork(object sender, DoWorkEventArgs e) {
-            try {
-                this.lfs.EnsureFolderExists(this.targetFolder);
+        public override void Work() {
+            this.lfs.EnsureFolderExists(this.targetFolder);
 
-                if (! this.CheckProgress(@"Retrieving the list of folders for this project...")) {
-                    return;
-                }
-                DocmanFolder[] folders = this.proxy.getDocmanFolders(this.proxy.Token, this.project_id);
-                IList<DocmanFolder> rootFolders = BuildFolderTree(folders);
+            if (!this.CheckProgress(@"Retrieving the list of folders for this project...")) return;
 
-                this.increment = 100 / folders.Length;
+            DocmanFolder[] folders = this.proxy.getDocmanFolders(this.proxy.Token, this.project_id);
+            IList<DocmanFolder> rootFolders = this.proxy.BuildFolderTree(folders);
 
-                this.SyncFolders(rootFolders, this.targetFolder);
-            } catch (Exception ex) {
-                this.Error = ex.Message;
-                throw;
-            }
-        }
+            this.Increment = 100 / folders.Length;
 
-        private IList<DocmanFolder> BuildFolderTree(DocmanFolder[] folders) {
-
-            Dictionary<int, DocmanFolder> sortingHat = new Dictionary<int, DocmanFolder>();
-            IList<DocmanFolder> ret = new List<DocmanFolder>();
-
-            // Rip through once, building a keyed listing for future reference
-            foreach (DocmanFolder fld in folders) {
-                sortingHat.Add(fld.docman_folder_id, fld);
-            }
-
-            // Go through again, adding children to parent listings
-            foreach (DocmanFolder fld in folders) {
-                // If it's a root folder, add to the ret collection
-                if (fld.parent_folder_id == 0) {
-                    ret.Add(fld);
-                } else {
-                    DocmanFolder parent = sortingHat[fld.parent_folder_id];
-                    if (parent == null) 
-                        throw new InvalidOperationException(string.Format(@"Folder {0} (id {1}) references a non-existent parent folder {2}", fld.folder_name, fld.docman_folder_id, fld.parent_folder_id));
-                    parent.ChildFolders.Add(fld);
-                }
-            }
-
-            return ret;
-        }
-
-        private bool CheckProgress(string template, params object[] values) {
-            return CheckProgress(string.Format(template, values));
-        }
-
-        private bool CheckProgress(string msg) {
-            this.ReportProgress(this.percentComplete, msg);
-            return (this.CancellationPending == false);
-        }
-
-        private bool IncrementProgress(string template, params object[] values) {
-            return IncrementProgress(string.Format(template, values));
-        }
-
-        private bool IncrementProgress(string msg) {
-            this.percentComplete += this.increment;
-            this.ReportProgress(this.percentComplete, msg);
-            return (this.CancellationPending == false);
+            this.SyncFolders(rootFolders, this.targetFolder);
         }
 
         private void SyncFolders(IList<DocmanFolder> folders, string basePath) {
 
             foreach (DocmanFolder folder in folders) {
-                if (!this.IncrementProgress(@"Retrieving content for {0}...", folder.folder_name)) {
-                    return;
-                }
+                if (!this.IncrementProgress(@"Retrieving content for {0}...", folder.folder_name)) return;
                 this.SyncFolder(folder, basePath);
             }
+
+            LocalFileService.SyncFolderInfo sync = lfs.GetFolderInfo(basePath);
+            if (sync == null) {
+                sync = new LocalFileService.SyncFolderInfo(this.proxy.ServerURL, this.project_id.ToString(), @"0", DateTime.Now);
+            }
+            this.lfs.WriteFolderInfo(sync, basePath);
+
         }
 
+        // RMT: Data references go: project_id -> docman_folder_id ->docman_file_id -> docman_file_version_id -> filesystem ref_id
         private void SyncFolder(DocmanFolder folder, string basePath) {
             string folderPath = lfs.BuildPath(basePath, folder.folder_name);
             this.lfs.EnsureFolderExists(folderPath);
@@ -116,9 +63,8 @@ namespace GForgeDocWindow.Actions {
             DocmanFile[] files = this.proxy.getDocmanFiles(this.proxy.Token, folder.docman_folder_id);
             for (int i = 0; i < files.Length; i++) {
                 DocmanFile file = files[i];
-                if (! this.CheckProgress(@"Checking file {0} of {1} ({2})...", i, files.Length, file.description)) {
-                    return;
-                }
+                if (!this.CheckProgress(@"Checking file {0} of {1} ({2})...", i+1, files.Length, file.description))  return;
+
                 try {
                     DocmanFileVersion[] versions = this.proxy.getDocmanFileVersions(this.proxy.Token, file.docman_file_id);
                     if (versions.Length > 0) {
@@ -127,12 +73,10 @@ namespace GForgeDocWindow.Actions {
 
                         DateTime lastChanged = DateTime.Parse(version.create_date);
                         string localFile = lfs.BuildPath(folderPath, version.filename);
-
                         if (lfs.IsRemoteFileUpdated(localFile, lastChanged)) {
-                            if (! this.CheckProgress(@"Checking file {0} of {1} ({2}), updating local copy...", i, files.Length, file.description)) {
-                                return;
-                            }
-                            UpdateLocalFile(version.docman_file_id, localFile, lastChanged);
+                            if (!this.CheckProgress(@"Checking file {0} of {1} ({2}), updating local copy...", i+1, files.Length, this.lfs.TrimPath(file.description, 20))) return;
+
+                            UpdateLocalFile(version.docman_file_version_id, localFile, lastChanged);
                         }
                     }
 
@@ -148,10 +92,13 @@ namespace GForgeDocWindow.Actions {
         }
 
         public void UpdateLocalFile(int docId, string destinationFile, DateTime lastChanged) {
-            Filesystem file = this.proxy.getFilesystem(this.proxy.Token, docId);
-            //lfs.DownloadFile(this.proxy.ServerURL + file.download_url, destinationFile, lastChanged);
-            FilesystemData data = this.proxy.getFilesystemData(this.proxy.Token, file.filesystem_id);
-            this.lfs.WriteFile(destinationFile, data.file_data, lastChanged);
+            Filesystem[] files = this.proxy.getFilesystems(this.proxy.Token, GForgeProxy.FILESYS_SECTION_DOCMAN, docId);
+            if (files.Length > 0) {
+                //FilesystemData data = this.proxy.getFilesystemData(this.proxy.Token, file.filesystem_id);
+                //this.lfs.WriteFile(destinationFile, data.file_data, lastChanged);
+                Filesystem file = files[0];
+                this.lfs.DownloadFile(this.proxy.ServerURL + file.download_url, destinationFile, this.proxy.Token, lastChanged);
+            }
         }
 
     }
