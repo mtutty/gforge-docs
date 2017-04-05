@@ -3,6 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GForgeDocWindow", "GForgeDocWindow\GForgeDocWindow.csproj", "{BA8103A6-A3A1-4A2E-943F-FFF8458052B8}"
 EndProject
+# Some content change
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -19,3 +20,4 @@ Global
 	EndGlobalSection
 EndGlobal
 # Add comment to the bottom instead
+# Another comment
